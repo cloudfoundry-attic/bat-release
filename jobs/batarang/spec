@@ -1,0 +1,9 @@
+---
+name: batarang
+
+templates:
+  batarang_ctl: bin/batarang_ctl
+
+packages:
+  - batarang
+  - ruby

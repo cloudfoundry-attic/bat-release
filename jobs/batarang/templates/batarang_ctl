@@ -1,0 +1,43 @@
+#!/bin/bash
+
+JOB=batarang
+
+export PATH=/var/vcap/packages/ruby/bin:$PATH
+export BUNDLE_GEMFILE=/var/vcap/packages/$JOB/Gemfile
+
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
+BIN_DIR=/var/vcap/packages/$JOB/bin
+PIDFILE=$RUN_DIR/$JOB.pid
+RUNAS=vcap
+
+case $1 in
+
+  start)
+    mkdir -p $RUN_DIR $LOG_DIR
+    chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    export NATS_URI='<%= properties.mbus %>'
+    export BUNDLE_GEMFILE=/var/vcap/packages/$JOB/Gemfile
+
+    exec chpst -u $RUNAS:$RUNAS \
+      bundle exec $BIN_DIR/batarang <%= spec.index %> \
+      >>$LOG_DIR/$JOB.stdout.log \
+      2>>$LOG_DIR/$JOB.stderr.log
+    ;;
+
+  stop)
+    PID=$(head -1 $PIDFILE)
+    kill $PID
+    while [ -e /proc/$PID ]; do sleep 0.1; done
+    rm -f $PIDFILE
+    ;;
+
+  *)
+
+  echo "Usage: $JOB_ctl {start|stop}" ;;
+esac
+exit 0
+
