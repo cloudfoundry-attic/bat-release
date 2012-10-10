@@ -1,26 +1,28 @@
 #!/bin/bash
 
 JOB=batarang
+BASE=/var/vcap
 
-export PATH=/var/vcap/packages/ruby/bin:$PATH
-export BUNDLE_GEMFILE=/var/vcap/packages/$JOB/Gemfile
+export PATH=$BASE/packages/ruby/bin:$PATH
+export BUNDLE_GEMFILE=$BASE/packages/$JOB/Gemfile
 
-RUN_DIR=/var/vcap/sys/run/$JOB
-LOG_DIR=/var/vcap/sys/log/$JOB
-BIN_DIR=/var/vcap/packages/$JOB/bin
+RUN_DIR=$BASE/sys/run/$JOB
+LOG_DIR=$BASE/sys/log/$JOB
+BIN_DIR=$BASE/packages/$JOB/bin
+STORE_DIR=$BASE/store/$JOB
 PIDFILE=$RUN_DIR/$JOB.pid
+
 RUNAS=vcap
 
 case $1 in
 
   start)
-    mkdir -p $RUN_DIR $LOG_DIR
-    chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR
+    mkdir -p $RUN_DIR $LOG_DIR $STORE_DIR
+    chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR $STORE_DIR
 
     echo $$ > $PIDFILE
 
     export NATS_URI='<%= properties.mbus %>'
-    export BUNDLE_GEMFILE=/var/vcap/packages/$JOB/Gemfile
 
     exec chpst -u $RUNAS:$RUNAS \
       bundle exec $BIN_DIR/batarang <%= spec.index %> \
