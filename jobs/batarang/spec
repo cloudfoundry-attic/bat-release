@@ -3,6 +3,7 @@ name: batarang
 
 templates:
   batarang_ctl: bin/batarang_ctl
+  drain: bin/drain
 
 packages:
   - batarang
