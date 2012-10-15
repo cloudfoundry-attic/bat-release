@@ -1,0 +1,9 @@
+---
+name: batlight
+
+templates:
+  batlight_ctl: bin/batlight_ctl
+  drain: bin/drain
+
+packages:
+  - batlight
