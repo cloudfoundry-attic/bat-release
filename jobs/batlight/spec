@@ -2,7 +2,7 @@
 name: batlight
 
 templates:
-  batlight_ctl: bin/batlight_ctl
+  batlight_ctl.erb: bin/batlight_ctl
   drain: bin/drain
 
 packages:

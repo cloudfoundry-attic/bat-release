@@ -16,6 +16,11 @@ RUNAS=vcap
 
 case $1 in
 
+  # simulate failure if properties.batlight.fail is set
+  if [ ! -z "<%= properties.batlight.fail if properties.batlight %>" ]; then
+    exit 1
+  fi
+
   start)
     mkdir -p $RUN_DIR $LOG_DIR $STORE_DIR
     chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR $STORE_DIR
