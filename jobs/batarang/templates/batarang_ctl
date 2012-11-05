@@ -22,7 +22,7 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    export NATS_URI='<%= properties.mbus %>'
+    export NATS_URI='<%= p("mbus") %>'
 
     exec chpst -u $RUNAS:$RUNAS \
       bundle exec $BIN_DIR/batarang <%= spec.index %> \

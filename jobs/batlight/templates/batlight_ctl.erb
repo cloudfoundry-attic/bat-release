@@ -14,12 +14,12 @@ PIDFILE=$RUN_DIR/$JOB.pid
 
 RUNAS=vcap
 
-case $1 in
+if [ "<%= p('batlight.fail') %>" = "control" ]; then
+  echo "simulated $JOB control script failure" 1>&2
+  exit 1
+fi
 
-  # simulate failure if properties.batlight.fail is set
-  if [ ! -z "<%= properties.batlight.fail if properties.batlight %>" ]; then
-    exit 1
-  fi
+case $1 in
 
   start)
     mkdir -p $RUN_DIR $LOG_DIR $STORE_DIR

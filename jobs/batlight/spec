@@ -1,6 +1,11 @@
 ---
 name: batlight
 
+properties:
+  batlight.fail:
+    default: nope
+    description: Simulate failure at component
+
 templates:
   batlight_ctl.erb: bin/batlight_ctl
   drain: bin/drain
