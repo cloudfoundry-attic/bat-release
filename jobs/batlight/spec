@@ -5,10 +5,16 @@ properties:
   batlight.fail:
     default: nope
     description: Simulate failure at component
+  batlight.dummy:
+    description: Used to test properties without a default
+  batlight.default:
+    default: yes
+    description: Used to test properties with a default that will evaluate to true
 
 templates:
   batlight_ctl.erb: bin/batlight_ctl
   drain: bin/drain
+  properties.erb: config/properties
 
 packages:
   - batlight
